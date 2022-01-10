@@ -31,8 +31,8 @@ class User(models.Model):
     penalty = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=40) #개인 정보
     lab_name = models.CharField(max_length=40, blank=True)
-    exp_submit = models.PositiveSmallIntegerField(default=0) # 왜 booleanfield 사용하지 않는가?
-    permit = models.PositiveSmallIntegerField(default=0) # 왜 booleanfield 사용하지 않는가?
+    exp_submit = models.BooleanField(default=False) # 왜 booleanfield 사용하지 않는가?
+    permit = models.BooleanField(default=0) # 왜 booleanfield 사용하지 않는가?
     
 
 class User_Post_match(models.Model):
