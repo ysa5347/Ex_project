@@ -27,7 +27,7 @@ class User(models.Model):
     user_PW = models.CharField(max_length=15)
     phone_num = models.CharField(max_length=11) # 개인 정보
     birth_year = models.PositiveSmallIntegerField() #개인 정보
-    user_money = models.PositiveSmallIntegerField()
+    
     penalty = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=40) #개인 정보
     lab_name = models.CharField(max_length=40, blank=True)
