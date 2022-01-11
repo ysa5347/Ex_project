@@ -28,5 +28,6 @@ router.register('Post', views.PostView, 'Post')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    # path('', HomeTemplateView.as_view(), name='home')
+    path('post/', include('post.urls'))
+    # path('', HomeTemplateView.as_view({'get':'list'}), name='home')
 ]
