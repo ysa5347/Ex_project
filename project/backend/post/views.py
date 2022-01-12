@@ -12,9 +12,10 @@ def helloAPI(request):
     return Response("hello world!")
 
 @api_view(['GET'])
-def post_page(request, post_id):
-    totalPost = Post.objects.all()
-    return Response(totalPost())
+def postlist(request):
+    posts = Post.objects.all()
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)
 
 class PostView(viewsets.ModelViewSet):
     serializer_class = PostSerializer

@@ -2,19 +2,19 @@ from django.db import models
 
 
 class Post(models.Model): # 내맘대로 짜봤음/
-    post_ID = models.PositiveIntegerField() # pk로 대체 가능
-    writer_pk = models.PositiveIntegerField()
+    post_ID = models.PositiveIntegerField(null=True) # pk로 대체 가능
+    writer_pk = models.PositiveIntegerField(null = True)
     lab_name = models.CharField(max_length=40) # lab name를 어떻게 처리할 것인가.(예를 들어, 우리가 Lab 이름들을 모두 저장해 놓고, 번호로 지정해줄 것인가 아니면 자유롭게 지정할 것인가)
     title = models.TextField()
     post_date = models.DateField()
     exp_start = models.DateField()
-    exp_end = models.SmallIntegerField() # 종료일 = Date + During_Date
-    sub_age = models.PositiveSmallIntegerField()
-    sub_gender = models.BooleanField() # 남 0 여 1
+    exp_end = models.DateField() # 종료일 = Date + During_Date
+    sub_age = models.PositiveSmallIntegerField(blank=True, null=True)
+    sub_gender = models.BooleanField(blank=True) # 남 0 여 1
     on_offline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
-    location = models.CharField(max_length=30)
-    body = models.TextField(max_length=1000)
+    location = models.CharField(max_length=30, blank=True, null=True)
+    body = models.TextField(max_length=10000)
     post_file = models.FileField(blank=True)
     post_img = models.ImageField(blank=True)
     
