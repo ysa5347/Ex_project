@@ -13,21 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from post.views import PostView
+from post.views import PostViewSet
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from post import views
 
-class HomeTemplateView(PostView):
+class HomeTemplateView(PostViewSet):
     template_name = 'index.html'
 
 router = routers.DefaultRouter()
-router.register('Post', views.PostView, 'Post')
+router.register(r'posts', views.PostViewSet, 'Post')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('post/', include('post.urls'))
-    # path('', HomeTemplateView.as_view({'get':'list'}), name='home')
+    # path('', HomeTemplateView.as_view(), name='home')
 ]

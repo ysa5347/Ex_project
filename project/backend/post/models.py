@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Post(models.Model): # 내맘대로 짜봤음/
-    post_ID = models.PositiveIntegerField(null=True) # pk로 대체 가능
-    writer_pk = models.PositiveIntegerField(null = True)
+    # post_ID = models.PositiveIntegerField(null=True) # pk로 대체 가능
+    # writer_pk = models.PositiveIntegerField(null=True)
     lab_name = models.CharField(max_length=40) # lab name를 어떻게 처리할 것인가.(예를 들어, 우리가 Lab 이름들을 모두 저장해 놓고, 번호로 지정해줄 것인가 아니면 자유롭게 지정할 것인가)
     title = models.TextField()
     post_date = models.DateField()
