@@ -10,13 +10,13 @@ class Post(models.Model): # 내맘대로 짜봤음/
     exp_start = models.DateField()
     exp_end = models.DateField() # 종료일 = Date + During_Date
     sub_age = models.PositiveSmallIntegerField(blank=True, null=True)
-    sub_gender = models.BooleanField(blank=True) # 남 0 여 1
+    sub_gender = models.BooleanField(blank=True, null=True) # 남 0 여 1
     on_offline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
     body = models.TextField(max_length=10000)
-    post_file = models.FileField(blank=True)
-    post_img = models.ImageField(blank=True)
+    post_file = models.FileField(blank=True, null=True)
+    post_img = models.ImageField(blank=True, null=True)
     
 
     def __str__(self):
@@ -27,7 +27,6 @@ class User(models.Model):
     user_PW = models.CharField(max_length=15)
     phone_num = models.CharField(max_length=11) # 개인 정보
     birth_year = models.PositiveSmallIntegerField() #개인 정보
-    
     penalty = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=40) #개인 정보
     lab_name = models.CharField(max_length=40, blank=True)
@@ -45,5 +44,5 @@ class Time_table(models.Model):
     user_pk = models.PositiveIntegerField()
     start = models.PositiveSmallIntegerField()# 0 ~ 1440 min
     end = models.PositiveSmallIntegerField() # 0 ~ 1440 min
-    boolean = models.PositiveSmallIntegerField()  # 왜 booleanfield 사용하지 않는가?
-    day = models.CharField(max_length=8) # 왜 Datefield 사용하지 않는가?
+    boolean = models.BooleanField()  
+    day = models.DateField() 
