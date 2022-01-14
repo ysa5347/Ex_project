@@ -12,16 +12,49 @@ def helloAPI(request):
     return Response("hello world!")
 
 @api_view(['GET'])
-def postlist(request):
+def PostList(request):
     posts = Post.objects.all()
     serializer = PostListSerializer(posts, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
-def postview(request, pk):
+def PostView(request, pk):
     posts = Post.objects.get(id=pk)
     serializer = PostSerializer(posts, many=False)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def PostCreate(request, pk):
+    serializer = PostSerializer(data = request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        print('valid update')
+    else:
+        print('invalid update')
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def PostUpdate(request, pk):
+    post = Post.objects.get(id=pk)
+    serializer = PostSerializer(instance=post, data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        print('valid update')
+    else:
+        print('invalid update')
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def PostDelete(request, pk):
+    post = Post.objects.get(id=pk)
+
+    if post:
+        post.delete()
+        return Response("Deleted...")
+    else:
+        return Response("There has something problem")
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
