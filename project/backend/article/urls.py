@@ -1,9 +1,15 @@
 from django.urls import path, include
 from django.urls.resolvers import URLPattern
-from .views import helloAPI, articlelist, articleview
+from .views import ArticleDelete, ArticleUpdate, helloAPI, ArticleList, ArticleView, ArticleCreate, IsIdValid#, ArticleCreateView
 
 urlpatterns = [
     path("hello/", helloAPI),
-    path("",articlelist),
-    path("articleview/<str:pk>/",articleview),
+    path("",ArticleList),
+    path("view/<int:pk>/",ArticleView),
+    # path("create/", ArticleCreateView),
+    path("create/<int:pk>/", ArticleCreate),
+    path("delete/<int:pk>/", ArticleDelete),
+    path("update/<int:pk>/", ArticleUpdate),
+
+    path("isidvalid/", IsIdValid),
 ]

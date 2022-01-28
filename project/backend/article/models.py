@@ -33,6 +33,10 @@ class User(models.Model):
     isExp = models.BooleanField(default=False)
     isPermit = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'[{self.pk}] {self.userID}'
+
+
 class User_Article_match(models.Model):
     pkUser = models.PositiveIntegerField()
     pkPost = models.PositiveIntegerField()
