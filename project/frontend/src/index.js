@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'mdbreact/dist/css/mdb.css';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 ReactDOM.render(
   <React.StrictMode>
     <App />

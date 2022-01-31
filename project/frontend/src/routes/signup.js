@@ -1,39 +1,27 @@
 import react, { useState,useRef, useEffect } from "react";
-import {birthList,emailList} from "./data";
+import {birthList,emailList} from "./data/signup_data";
 import Modal from "./modal/signModal";
 
-const Signup = () => {
+const Signup = ({isLogin,setIsLogin}) => {
+
     const inputRef = useRef();
-    const [check,setCheck] = useState(false) //id가 있는지 없는지 확인 state
+    const [check,setCheck] = useState(false) //id가 있는지 없는지 확인 state 확인
     const [popup,setPopup]= useState(false) //팝업
-    const [on,setOn] = useState(false) //id 중복확인 눌렀는지 확인 state
-    const [final,setFinal] = useState("") //최종적으로 나오는 메일 state확인
+    const [on,setOn] = useState(false) //id 중복확인 눌렀는지 확인 state 확인
+    const [final,setFinal] = useState("") //최종적으로 나오는 메일 state 확인
     const [passwordType,setPasswordType] = useState(true)
-    const [click,setClick] = useState({
-        birth:'',
-        cmail:'0'
-    })
     
-    const handleSelect = (e) => {
-        const {name,value} = e.target
-
-        const nextClick = {
-            ...click,
-            [name]:value,
-        }
-        setClick(nextClick)
-    }
-
     const [inputs,setInputs] = useState({
-        id:"",
-        password:"",
-        name:'',
+        id:"", //userID
+        password:"", //userPW
+        name:'', 
         phone:'',
         email:'',
+        birth:'',
+        select_mail:'0'
     })
 
-    const {id,password,name,phone,email} = inputs
-
+    const {id,password,name,phone,email,birth,select_mail} = inputs
     const onChange = (e) =>{
         const {name,value} = e.target
         const nextInputs = {
@@ -51,11 +39,11 @@ const Signup = () => {
         
     }
     
-    const checkID= (e)=>{
+    const checkID = (e)=>{
         e.preventDefault();
         setOn(true)
         const data ={
-            id : id
+            userID : id
         }
         //setCheck(true)이거 해야됨
         //post 해서 그것만 받아오면 됨
@@ -65,23 +53,24 @@ const Signup = () => {
     const sign = () => {
         setPopup(true)
         const data = {
-            id : id,
-            password : password,
+            userID : id,
+            userPW : password,
             name : name,
             phone : phone,
-            birth : click.birth,
+            birth : birth,
             email : final,
         }
         //data 저장하는 post보내기
+        console.log(data)
     }
+
     useEffect (() => {
-        if (click.cmail==0){
+        if (select_mail==0){
             setFinal(inputs.email)
         }
         else{
-            setFinal(inputs.email+emailList[click.cmail].name)
+            setFinal(inputs.email+emailList[select_mail].name)
         }
-        console.log(inputs)
     })
     
     return(
@@ -130,12 +119,11 @@ const Signup = () => {
                     onChange={onChange}
                     ref = {inputRef}
                     placeholder="전화번호를 입력하세요.(-를 빼주세요)"
-                    value={phone}/>   
-                - 숫자만 입력하세요
+                    value={phone}/>
             </div>
             <div className="birth">
                 생년
-                <select name="birth" onChange={handleSelect} defaultValue={0}>
+                <select name="birth" onChange={onChange} defaultValue={0}>
                     {birthList.map((item)=>(
                         <option value={item.value} key={item.value}>
                             {item.name}
@@ -151,13 +139,16 @@ const Signup = () => {
                     ref = {inputRef}
                     placeholder="E-mail을 입력하세요"
                     value={email} />
-                    <select name="cmail" onChange={handleSelect} >
+                    <select name="cmail" onChange={onChange} >
                         {emailList.map((item)=>(
                             <option value={item.value} key={item.value}>
                                 {item.name}
                             </option>
                         ))}
                     </select>
+            </div>
+            <div className="gender">
+
             </div>
             
             <react.Fragment>
