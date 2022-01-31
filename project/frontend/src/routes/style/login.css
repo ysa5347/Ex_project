@@ -1,0 +1,79 @@
+.Header {
+    position: relative;
+    padding: 14px 22px;
+    width:98%;
+    height:65px;
+    display:flex;
+    align-items: center;
+    box-shadow : 0 2px 2px -1px rgb(0 0 0 /10%);
+}
+.photo {
+    margin-top: 10px;
+    width:220px;
+    height:65px;
+}
+.signup-message{
+    color:black;
+    margin-right: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top:12px;
+}
+.Header-logo{
+    position: relative;
+    width:20%;
+}
+.login_auto{
+    margin-top:30px;
+    margin-bottom:30px;
+}
+.spacer{
+    position: relative;
+    width:67%;
+}
+.signup-button{ 
+    font-weight: bold;
+    font-size : 16px;
+    float : right;
+    vertical-align: middle;
+    display: flex;
+}
+.login {
+    display:inline-block;
+    padding: top 20px;
+    margin:50px;
+    text-align:left;
+    padding-top:5%;
+    width:20%;
+}
+.outline{
+    border-top: 1px solid #00bffe ;
+    border-bottom: 1px solid #00bffe;
+}
+.medium{
+    width:100%;
+    height:50%;
+    text-align: center;
+}
+
+.title{
+    font-weight: bold;
+    margin-bottom:20px;
+}
+.informtitle{
+    font-size : large;
+    font-weight: bold;
+    margin-top:10px;
+    margin-bottom: 20px;
+}
+
+.m_bottom{
+
+    position: relative;
+    display: flex;
+    top:30px;
+}
+
+.bottom{
+    margin-top:20px;
+}

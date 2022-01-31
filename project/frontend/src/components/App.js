@@ -4,9 +4,13 @@ import React, {useState} from 'react';
 
 
 function App() {
+  const [isLogin,setIsLogin] = useState(false);
   return (
     <div>
-      <AppRouter></AppRouter>
+      <AppRouter
+        isLogin={isLogin}
+        setIsLogin={setIsLogin}>
+        </AppRouter>
     </div>
     
     
