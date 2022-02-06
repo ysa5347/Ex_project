@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Article(models.Model):
     #postID = models.PositiveIntegerField(null=True) # pk로 대체 가능
     writerID = models.PositiveIntegerField(null=True) #로그인 하고, 자동으로 어떻게 받죠
@@ -20,21 +19,6 @@ class Article(models.Model):
     
     def __str__(self):
         return f'[{self.pk}]{self.title}'
-
-class User(models.Model):
-    userID = models.CharField(max_length=15)
-    userPW = models.CharField(max_length=15)
-    phone = models.CharField(max_length=11) # 개인 정보
-    email = models.CharField(max_length=100)
-    birth = models.PositiveSmallIntegerField() #개인 정보
-    penalty = models.PositiveSmallIntegerField()
-    name = models.CharField(max_length=40) #개인 정보
-    lab = models.CharField(max_length=40, blank=True)
-    isExp = models.BooleanField(default=False)
-    isPermit = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'[{self.pk}] {self.userID}'
 
 
 class User_Article_match(models.Model):

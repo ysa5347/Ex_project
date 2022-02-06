@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.urls.resolvers import URLPattern
-from .views import ArticleDelete, ArticleUpdate, helloAPI, ArticleList, ArticleView, ArticleCreate, IsIdValid#, ArticleCreateView
+from .views import ArticleDelete, ArticleUpdate, helloAPI, ArticleList, ArticleView, ArticleCreate#, ArticleCreateView
 
 urlpatterns = [
     path("hello/", helloAPI),
@@ -10,6 +10,4 @@ urlpatterns = [
     path("create/<int:pk>/", ArticleCreate),
     path("delete/<int:pk>/", ArticleDelete),
     path("update/<int:pk>/", ArticleUpdate),
-
-    path("isidvalid/", IsIdValid),
 ]

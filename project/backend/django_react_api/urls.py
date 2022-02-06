@@ -29,7 +29,7 @@ class HomeTemplateView(ArticleViewSet):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', helloAPI),
-    path('article/', include('article.urls'))
-    # path('user/', include())
+    path('article/', include('article.urls')),
+    path('account/', include('account.urls'))
     # path('', HomeTemplateView.as_view(), name='home')
 ]
