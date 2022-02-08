@@ -1,6 +1,5 @@
 from importlib.metadata import requires
 from rest_framework import serializers
-from rest_framework_jwt.settings import api_settings
 from django.contrib.auth import get_user_model
 from .models import CustomUser
 
