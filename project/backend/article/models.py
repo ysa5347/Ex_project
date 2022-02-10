@@ -3,19 +3,20 @@ from django.db import models
 from account.models import CustomUser
 
 class Article(models.Model):
-    #postID = models.PositiveIntegerField(null=True) # pk로 대체 가능
     writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL) 
     lab = models.CharField(max_length=40) # lab name를 어떻게 처리할 건가요?(예를 들어, 우리가 Lab 이름들을 모두 저장해 놓고, 번호로 지정해줄 것인가요 아니면 자유롭게 지정할 것인가용?)
     title = models.TextField()
     postDate = models.DateField()
     startDay = models.DateField()
     endDay = models.DateField()
-    age = models.PositiveSmallIntegerField(blank=True, null=True) #나이 하나만 받는게 아니라, 나이대를 받아야 하지 않나요
+    startBirth = models.PositiveSmallIntegerField(blank=True, null=True)
+    endBirth = models.PositiveSmallIntegerField(blank=True, null=True)
     gender = models.CharField(blank=True, null=True, max_length=6)
     isOffline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
-    content = models.TextField()
+    subject = models.CharField(max_length=30, blank=True, null=True)
+    content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
     
