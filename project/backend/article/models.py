@@ -1,8 +1,10 @@
+
 from django.db import models
+from account.models import CustomUser
 
 class Article(models.Model):
     #postID = models.PositiveIntegerField(null=True) # pk로 대체 가능
-    writerID = models.PositiveIntegerField(null=True) #로그인 하고, 자동으로 어떻게 받죠
+    writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL) 
     lab = models.CharField(max_length=40) # lab name를 어떻게 처리할 건가요?(예를 들어, 우리가 Lab 이름들을 모두 저장해 놓고, 번호로 지정해줄 것인가요 아니면 자유롭게 지정할 것인가용?)
     title = models.TextField()
     postDate = models.DateField()
@@ -18,8 +20,7 @@ class Article(models.Model):
     articleImg = models.ImageField(blank=True, null=True)
     
     def __str__(self):
-        return f'[{self.pk}]{self.title}'
-
+        return f'[{self.pk}]{self.title} :: {self.writerID}'
 
 class User_Article_match(models.Model):
     pkUser = models.PositiveIntegerField()
