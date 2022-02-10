@@ -1,8 +1,9 @@
 from importlib.metadata import requires
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
-from .models import CustomUser
 
+from django.contrib.auth import get_user_model
+
+from .models import CustomUser
 User = get_user_model()
 
 class UserCreateSerializer(serializers.Serializer):

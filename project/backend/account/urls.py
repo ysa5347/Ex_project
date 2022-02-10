@@ -6,4 +6,5 @@ from .views import IsIdValid
 urlpatterns = [
     path("create/", views.createUser),
     path("isidvalid/", IsIdValid),
+    
 ]
