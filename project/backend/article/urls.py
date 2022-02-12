@@ -5,7 +5,7 @@ from .views import ArticleDelete, ArticleUpdate, helloAPI, ArticleList, ArticleV
 urlpatterns = [
     path("hello/", helloAPI),
     path("",ArticleList),
-    path("view/<int:pk>/",ArticleView),
+    path("<int:pk>/",ArticleView),
     # path("create/", ArticleCreateView),
     path("create/<int:pk>/", ArticleCreate),
     path("delete/<int:pk>/", ArticleDelete),

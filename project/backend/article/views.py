@@ -16,14 +16,20 @@ def helloAPI(request):
 def ArticleList(request):
     articles = Article.objects.all()
     serializer = ArticleListSerializer(articles, many=True)
+    
     return Response(serializer.data)
 
 @api_view(['GET'])
 def ArticleView(request, pk):
     try:
-        articles = Article.objects.get(id=pk)
+        articles = Article.objects.get(pk=pk)
     except Article.DoesNotExist:
         return Response('error 404: 요청하신 페이지는 삭제되었거나 존재하지 않습니다.', status=404)
+    
+    # if 1: # articles.writerID != 현재 로그인된 ID
+    articles.hits += 1
+    articles.save()
+    
     serializer = ArticleSerializer(articles, many=False)
     return Response(serializer.data)
 
