@@ -4,7 +4,7 @@ from . import views
 from .views import IsIdValid
 
 urlpatterns = [
-    path("create/", views.createUser),
+    path("signup/", views.createUser),
     path("isidvalid/", IsIdValid),
     
 ]
