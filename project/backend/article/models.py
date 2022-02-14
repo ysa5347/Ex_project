@@ -16,7 +16,7 @@ class Article(models.Model):
     isOffline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
-    subject = models.CharField(max_length=30, blank=True, null=True)
+    subject = models.ForeignKey("Tag", max_length=30, blank=True, null=True, on_delete=models.SET_NULL)
     content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
@@ -24,6 +24,13 @@ class Article(models.Model):
     
     def __str__(self):
         return f'[{self.pk}]{self.title} :: {self.writerID}'
+
+class Tag(models.Model):
+    subject = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f'{self.subject}'
+
 
 class User_Article_match(models.Model):
     pkUser = models.PositiveIntegerField()

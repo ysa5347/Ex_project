@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, User_Article_match
+from .models import Article, User_Article_match, Tag
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -18,6 +18,7 @@ class ArticleAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Tag)
 admin.site.register(User_Article_match)
 
 # Register your models here.
