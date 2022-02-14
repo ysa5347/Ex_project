@@ -4,10 +4,10 @@ from .models import Article, User_Article_match
 
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('postDate', 'writerID')
-    readonly_fields = ('hits',)
+    readonly_fields = ('hits','postDate', 'modifiedDate')
     fieldsets = (
         (None, {
-            'fields': ('writerID', 'lab', 'title', 'postDate', ('startDay', 'endDay'), ('startBirth', 'endBirth'))
+            'fields': ('writerID', 'lab', 'title', ('postDate', 'modifiedDate'), ('startDay', 'endDay'), ('startBirth', 'endBirth'))
         }),
         ('keywords', {
             'fields': ('gender', 'isOffline', 'reward', 'location', 'subject')

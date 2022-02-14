@@ -20,7 +20,7 @@ class Article(models.Model):
     content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
-    hits = models.PositiveIntegerField()
+    hits = models.PositiveIntegerField(default=0)
     
     def __str__(self):
         return f'[{self.pk}]{self.title} :: {self.writerID}'
