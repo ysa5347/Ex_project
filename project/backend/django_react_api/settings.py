@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'mypage',
     'account',
     'article',
-    'mypage',
     'rest_framework',
     'corsheaders',
 ]
