@@ -13,4 +13,7 @@ def getUser(request):
 def getUserArticle(request):
     pass
 
+@api_view(['GET'])
+def getUserPtcp(request):
+    pass
 # Create your views here.
