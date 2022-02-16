@@ -7,7 +7,7 @@ urlpatterns = [
     path("",ArticleList),
     path("<int:pk>/",ArticleView),
     # path("create/", ArticleCreateView),
-    path("create/<int:pk>/", ArticleCreate),
+    path("create/", ArticleCreate),
     path("delete/<int:pk>/", ArticleDelete),
     path("update/<int:pk>/", ArticleUpdate),
 ]
