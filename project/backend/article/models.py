@@ -1,8 +1,15 @@
 
+from tkinter import CASCADE
 from django.db import models
 from account.models import CustomUser
 
-class Tag(models.Model):
+"""
+    하나의 CustomUser와 SubjectTag는 여러개의 Article에 대응할 수 있다.
+    하나의 Article은 여러개의 TimeTable에 대응할 수 있다.
+    하나의 TimeTable은 여러개의 UserTimeMatchTable에 대응할 수 있다,
+"""
+
+class SubjectTag(models.Model):
     subject = models.CharField(max_length=100)
     
     def __str__(self):
@@ -22,20 +29,25 @@ class Article(models.Model):
     isOffline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
-    subject = models.ForeignKey(Tag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL)
+    subject = models.ForeignKey(SubjectTag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL)
     content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
     hits = models.PositiveIntegerField(default=0)
     
     def __str__(self):
-        return f'[{self.pk}]{self.title} :: {self.writerID}'
+        return f'[{self.pk}]{self.title}'
 
-
-
-class Time_table(models.Model):
-    pk = models.PositiveIntegerField(primary_key=True)
-    article = models.ForeignKey(Article)
+class TimeTable(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    ptcpUser = models.ForeignKey(CustomUser)
+    numMax = models.SmallIntegerField()
+    numPtcp = models.SmallIntegerField()
+
+    def __str__(self):
+        return f'{self.pk}'
+
+class UserTimeMatchTable(models.Model):
+    ptcpUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    Timetable = models.ForeignKey(TimeTable, on_delete=models.CASCADE)
