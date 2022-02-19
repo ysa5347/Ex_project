@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, User_Article_match
+from .models import Article, TimeTable, UserTimeMatchTable, SubjectTag
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -16,8 +16,9 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': ('content', 'articleFile', 'articleImg', 'hits')
         })
     )
-
+admin.site.register(TimeTable)
 admin.site.register(Article, ArticleAdmin)
-admin.site.register(User_Article_match)
+admin.site.register(SubjectTag)
+admin.site.register(UserTimeMatchTable)
 
 # Register your models here.
