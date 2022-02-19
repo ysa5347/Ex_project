@@ -7,7 +7,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = (
         'userID',
         'email',
-        'date_joined',
+        'dateJoined',
     )
     list_display_links = (
         'userID',

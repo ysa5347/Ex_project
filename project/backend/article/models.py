@@ -1,5 +1,3 @@
-
-from tkinter import CASCADE
 from django.db import models
 from account.models import CustomUser
 
@@ -17,7 +15,7 @@ class SubjectTag(models.Model):
 
 class Article(models.Model):
     writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL) 
-    lab = models.CharField(max_length=40) 
+    lab = models.CharField(max_length=40)
     title = models.TextField()
     postDate = models.DateField(auto_now_add=True)
     modifiedDate = models.DateField(auto_now=True)
