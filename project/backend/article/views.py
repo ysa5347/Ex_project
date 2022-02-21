@@ -34,7 +34,7 @@ def ArticleView(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
-def ArticleCreate(request, pk):
+def ArticleCreate(request):
     serializer = ArticleSerializer(data = request.data)
 
     if serializer.is_valid():

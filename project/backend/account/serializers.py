@@ -1,9 +1,7 @@
-from importlib.metadata import requires
 from rest_framework import serializers
-
 from django.contrib.auth import get_user_model
-
 from .models import CustomUser
+
 User = get_user_model()
 
 class UserCreateSerializer(serializers.Serializer):
@@ -20,3 +18,7 @@ class UserCreateSerializer(serializers.Serializer):
 
         user.save()
         return user
+
+class UserLoginSerializer(serializers.Serializer):
+    userID = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
