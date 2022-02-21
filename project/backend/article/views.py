@@ -1,6 +1,6 @@
 from django.http import HttpRequest
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -24,12 +24,12 @@ def ArticleView(request, pk):
     try:
         articles = Article.objects.get(pk=pk)
     except Article.DoesNotExist:
-        return Response('error 404: 요청하신 페이지는 삭제되었거나 존재하지 않습니다.', status=404)
+        return Response('error 404: 요청하신 페이지는 삭제되었거나 존재하지 않습니다.', status=status.HTTP_404_NOT_FOUND)
     
-    # if 1: # articles.writerID != 현재 로그인된 ID
+    # <-- view 조회수 기능 -->
     articles.hits += 1
     articles.save()
-    
+    # <-- -->
     serializer = ArticleSerializer(articles, many=False)
     return Response(serializer.data)
 
