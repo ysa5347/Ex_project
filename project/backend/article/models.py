@@ -1,10 +1,23 @@
 
+from tkinter import CASCADE
 from django.db import models
 from account.models import CustomUser
 
+"""
+    하나의 CustomUser와 SubjectTag는 여러개의 Article에 대응할 수 있다.
+    하나의 Article은 여러개의 TimeTable에 대응할 수 있다.
+    하나의 TimeTable은 여러개의 UserTimeMatchTable에 대응할 수 있다,
+"""
+
+class SubjectTag(models.Model):
+    subject = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f'{self.subject}'
+
 class Article(models.Model):
-    writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL) 
-    lab = models.CharField(max_length=40) # lab name를 어떻게 처리할 건가요?(예를 들어, 우리가 Lab 이름들을 모두 저장해 놓고, 번호로 지정해줄 것인가요 아니면 자유롭게 지정할 것인가용?)
+    writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL, related_name='writerID') 
+    lab = models.CharField(max_length=40) 
     title = models.TextField()
     postDate = models.DateField(auto_now_add=True)
     modifiedDate = models.DateField(auto_now=True)
@@ -16,24 +29,25 @@ class Article(models.Model):
     isOffline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
-    subject = models.CharField(max_length=30, blank=True, null=True)
+    subject = models.ForeignKey(SubjectTag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL, related_name='Sub1st')
     content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
     hits = models.PositiveIntegerField(default=0)
     
     def __str__(self):
-        return f'[{self.pk}]{self.title} :: {self.writerID}'
+        return f'[{self.pk}]{self.title}'
 
-class User_Article_match(models.Model):
-    pkUser = models.PositiveIntegerField()
-    pkPost = models.PositiveIntegerField()
-    timeLength = models.PositiveIntegerField()
+class TimeTable(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    numMax = models.SmallIntegerField()
+    numPtcp = models.SmallIntegerField()
 
-class Time_table(models.Model):
-    expInfo = models.PositiveIntegerField()
-    pkUser = models.PositiveIntegerField()
-    startTime = models.PositiveSmallIntegerField()# 0 ~ 1440 min
-    endTime = models.PositiveSmallIntegerField() # 0 ~ 1440 min
-    isCheck = models.BooleanField(default=False) # True: 예약이 차 있다.  
-    day = models.DateField()
+    def __str__(self):
+        return f'{self.pk}'
+
+class UserTimeMatchTable(models.Model):
+    ptcpUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='ptcpUser')
+    Timetable = models.ForeignKey(TimeTable, on_delete=models.CASCADE)

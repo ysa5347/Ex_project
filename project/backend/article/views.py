@@ -1,11 +1,12 @@
+from Ex_project.project.backend.account.models import CustomUser
 from django.http import HttpRequest
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import ArticleSerializer, ArticleListSerializer
-from .models import Article, User_Article_match
+from .models import Article, UserTimeMatchTable, TimeTable
 
 
 @api_view(['GET'])
@@ -24,25 +25,31 @@ def ArticleView(request, pk):
     try:
         articles = Article.objects.get(pk=pk)
     except Article.DoesNotExist:
-        return Response('error 404: 요청하신 페이지는 삭제되었거나 존재하지 않습니다.', status=404)
+        return Response('error 404: 요청하신 페이지는 삭제되었거나 존재하지 않습니다.', status=status.HTTP_404_NOT_FOUND)
     
-    # if 1: # articles.writerID != 현재 로그인된 ID
+    # <-- view 조회수 기능 -->
     articles.hits += 1
     articles.save()
-    
+    # <-- -->
     serializer = ArticleSerializer(articles, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def ArticleCreate(request):
-    serializer = ArticleSerializer(data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-        print('valid update')
-    else:
-        print('invalid update')
-    return Response(serializer.data)
+    if request.method == 'POST':
+        if not request.session.session_key:
+            return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
+        userID = request.user
+        loginUser = CustomUser.objects.get(userID=userID)
+        if not loginUser.isPermit:
+            return Response('권한이 필요한 요청입니다.')
+        serializer = ArticleSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print('valid update')
+        else:
+            print('invalid update')
+        return Response(serializer.data)
 
 @api_view(['PUT'])
 def ArticleUpdate(request, pk):
