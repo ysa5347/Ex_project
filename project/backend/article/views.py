@@ -1,3 +1,4 @@
+from Ex_project.project.backend.account.models import CustomUser
 from django.http import HttpRequest
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -35,14 +36,20 @@ def ArticleView(request, pk):
 
 @api_view(['POST'])
 def ArticleCreate(request):
-    serializer = ArticleSerializer(data = request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-        print('valid update')
-    else:
-        print('invalid update')
-    return Response(serializer.data)
+    if request.method == 'POST':
+        if not request.session.session_key:
+            return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
+        userID = request.user
+        loginUser = CustomUser.objects.get(userID=userID)
+        if not loginUser.isPermit:
+            return Response('권한이 필요한 요청입니다.')
+        serializer = ArticleSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print('valid update')
+        else:
+            print('invalid update')
+        return Response(serializer.data)
 
 @api_view(['PUT'])
 def ArticleUpdate(request, pk):
