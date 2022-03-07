@@ -3,7 +3,7 @@ from .models import Article, TimeTable, UserTimeMatchTable, SubjectTag
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('postDate', 'writerID')
+    list_display = ('title', 'postDate', 'writerID')
     readonly_fields = ('hits','postDate', 'modifiedDate')
     fieldsets = (
         (None, {
