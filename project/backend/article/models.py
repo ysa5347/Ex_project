@@ -14,8 +14,8 @@ class SubjectTag(models.Model):
         return f'{self.subject}'
 
 class Article(models.Model):
-    writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL) 
-    lab = models.CharField(max_length=40)
+    writerID = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL, related_name='writerID') 
+    lab = models.CharField(max_length=40) 
     title = models.TextField()
     postDate = models.DateField(auto_now_add=True)
     modifiedDate = models.DateField(auto_now=True)
@@ -27,7 +27,7 @@ class Article(models.Model):
     isOffline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
-    subject = models.ForeignKey(SubjectTag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL)
+    subject = models.ForeignKey(SubjectTag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL, related_name='Sub1st')
     content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
@@ -47,5 +47,5 @@ class TimeTable(models.Model):
         return f'{self.pk}'
 
 class UserTimeMatchTable(models.Model):
-    ptcpUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    ptcpUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='ptcpUser')
     Timetable = models.ForeignKey(TimeTable, on_delete=models.CASCADE)
