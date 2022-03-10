@@ -1,16 +1,16 @@
 from rest_framework import serializers
 from .models import Article, TimeTable, UserTimeMatchTable
 
-class UserTimeMatchTableSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserTimeMatchTable
-        fields = ['ptcpUser', 'Timetable']
+# class UserTimeMatchTableSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = UserTimeMatchTable
+#         fields = ['ptcpUser', 'Timetable']
 
 class ArticleTimeTableSerializer(serializers.ModelSerializer):
-    ptcpTable = UserTimeMatchTableSerializer(many=True, read_only=True)
+    ptcpTable = serializers.StringRelatedField(many=True)
     class Meta:
         model = TimeTable
-        fields = '__all__'
+        exclude = ['article']
         extra_fields = ['ptcpTable']
 
 class ArticleSerializer(serializers.ModelSerializer):
