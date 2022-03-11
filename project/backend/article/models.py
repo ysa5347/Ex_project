@@ -8,7 +8,11 @@ from account.models import CustomUser
 """
 
 class SubjectTag(models.Model):
-    subject = models.CharField(max_length=100)
+    subject = models.CharField(
+        max_length=100,
+        unique=True,
+        primary_key=True
+        )
     
     def __str__(self):
         return f'{self.subject}'
@@ -21,13 +25,14 @@ class Article(models.Model):
     modifiedDate = models.DateField(auto_now=True)
     startDay = models.DateField()
     endDay = models.DateField()
+    duringTime = models.TimeField(null=True)
     startBirth = models.PositiveSmallIntegerField(blank=True, null=True)
     endBirth = models.PositiveSmallIntegerField(blank=True, null=True)
     gender = models.CharField(blank=True, null=True, max_length=6)
     isOffline = models.BooleanField()
     reward = models.PositiveSmallIntegerField() #단위는 원
     location = models.CharField(max_length=30, blank=True, null=True)
-    subject = models.ForeignKey(SubjectTag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL, related_name='Sub1st')
+    subject = models.ForeignKey(SubjectTag, max_length=30, blank=True, null=True, on_delete=models.SET_NULL, related_name='sub1st')
     content = models.TextField(max_length = 10000)
     articleFile = models.FileField(blank=True, null=True)
     articleImg = models.ImageField(blank=True, null=True)
@@ -37,7 +42,7 @@ class Article(models.Model):
         return f'[{self.pk}]{self.title}'
 
 class TimeTable(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='timeTable')
     start = models.DateTimeField()
     end = models.DateTimeField()
     numMax = models.SmallIntegerField()
@@ -48,4 +53,7 @@ class TimeTable(models.Model):
 
 class UserTimeMatchTable(models.Model):
     ptcpUser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='ptcpUser')
-    Timetable = models.ForeignKey(TimeTable, on_delete=models.CASCADE)
+    Timetable = models.ForeignKey(TimeTable, on_delete=models.CASCADE, related_name='ptcpTable')
+
+    def __str__(self):
+        return f'{self.ptcpUser}'
