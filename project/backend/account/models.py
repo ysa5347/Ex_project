@@ -41,7 +41,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin): #AbstractBaseUser에 passw
     userID = models.CharField(
         max_length=15,
         unique=True,
-        help_text='user ID'
+        help_text='user ID',
+        primary_key=True
         )
     phone = models.CharField( #휴대폰 인증 서비스 등록 필
         max_length=11,

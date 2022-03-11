@@ -1,3 +1,4 @@
+
 from account.models import CustomUser
 from django.http import HttpRequest
 from django.shortcuts import render
@@ -53,13 +54,17 @@ def ArticleCreate(request):
         loginUser = CustomUser.objects.get(userID=userID)
         if not loginUser.isPermit:
             return Response('권한이 필요한 요청입니다.')
-        serializer = ArticleSerializer(data = request.data)
-        if serializer.is_valid():
+        data = request.data
+        data['writerID'] = request.user
+        # data.user = request.user
+        serializer = ArticleSerializer(data = data)
+        if serializer.is_valid() and serializer.validate_date(data):
             serializer.save()
             print('valid update')
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             print('invalid update')
-        return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 def ArticleUpdate(request, pk):
@@ -69,9 +74,11 @@ def ArticleUpdate(request, pk):
     if serializer.is_valid():
         serializer.save()
         print('valid update')
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         print('invalid update')
-    return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 @api_view(['DELETE'])
 def ArticleDelete(request, pk):
