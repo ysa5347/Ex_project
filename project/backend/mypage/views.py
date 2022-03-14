@@ -4,9 +4,10 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import getUserSerializer
+from .serializers import getUserSerializer, getUserArticleSerializer
 import time
 from account.models import CustomUser
+from article.models import Article
 
 @api_view(['GET'])
 def getUser(request):
@@ -22,7 +23,13 @@ def getUser(request):
 
 @api_view(['GET'])
 def getUserArticle(request):
-    pass
+    if not request.session.session_key:
+        return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
+    userID = request.user
+    loginUser = CustomUser.objects.get(userID=userID)
+    data = Article.objects.filter(writerID=loginUser.pk)
+    serializer = getUserArticleSerializer(data, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getUserPtcp(request):

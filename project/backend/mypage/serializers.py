@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from article.models import Article
 
 class getUserSerializer(serializers.Serializer):
     userID = serializers.CharField(required=True)
@@ -11,3 +12,8 @@ class getUserSerializer(serializers.Serializer):
     isPermit = serializers.BooleanField(required=True)
     if isPermit == 1:
         lab = serializers.CharField(required=True)
+
+class getUserArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ['pk','title', 'startDay', 'endDay', 'lab', 'reward']
