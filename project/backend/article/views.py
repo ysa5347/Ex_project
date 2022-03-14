@@ -20,7 +20,7 @@ def ArticleList(request):
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 
-# 요작업 구역
+
 @api_view(['GET'])
 def ArticleView(request, pk):
     try:
@@ -32,6 +32,7 @@ def ArticleView(request, pk):
     article.hits += 1
     article.save()
     # <-- -->
+    
     articleSerializer = ArticleSerializer(article, many=False)
     return Response(articleSerializer.data)
     
@@ -55,15 +56,13 @@ def ArticleCreate(request):
         if not loginUser.isPermit:
             return Response('권한이 필요한 요청입니다.')
         data = request.data
-        data['writerID'] = request.user
+        data['writerID'] = loginUser.pk
         # data.user = request.user
         serializer = ArticleSerializer(data = data)
         if serializer.is_valid() and serializer.validate_date(data):
             serializer.save()
-            print('valid update')
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response('valid update', status=status.HTTP_200_OK)
         else:
-            print('invalid update')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
