@@ -35,7 +35,7 @@ def ArticleView(request, pk):
     
     articleSerializer = ArticleSerializer(article, many=False)
     return Response(articleSerializer.data)
-    
+"""
 @api_view(['GET'])
 def getPtcpUser(request, pk):
     try:
@@ -44,7 +44,7 @@ def getPtcpUser(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
     userSerializer = ArticleTimeTableSerializer(timeTable, many=False)
     return Response(userSerializer.data)
-
+"""
 
 @api_view(['POST'])
 def ArticleCreate(request):

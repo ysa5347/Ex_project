@@ -22,8 +22,8 @@ class ArticleSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("실험 종료일은 시작일보다 앞설 수 없습니다.")
         if data['startBirth'] and data['endBirth']:
             # print("pass")
-            if data['startBirth'] < data['endBirth']:
-                raise serializers.ValidationError("startBirth는 endBirth보다 앞설 수 없습니다.")
+            if data['startBirth'] > data['endBirth']:
+                raise serializers.ValidationError("endBirth는 startBirth보다 앞설 수 없습니다.")
         elif data['startBirth'] or data['endBirth']: # startBirth, 혹은 endBirth 둘 중 하나만 입력된 경우엔 경고를 출력 할 것인가?
             raise serializers.ValidationError("startBirth, endBirth중 하나가 입력되지 않았습니다.")
         else:
