@@ -56,4 +56,4 @@ class UserTimeMatchTable(models.Model):
     timetable = models.ForeignKey(TimeTable, on_delete=models.CASCADE, related_name='ptcpTable')
 
     def __str__(self):
-        return f'{self.ptcpUser}'
+        return f'{self.userID}'

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from article.models import Article, TimeTable
+from article.models import Article, TimeTable, UserTimeMatchTable
 
 class getUserSerializer(serializers.Serializer):
     userID = serializers.CharField(required=True)
@@ -31,13 +31,13 @@ class getUserPtcpTimeSerializer(serializers.ModelSerializer):
         model = TimeTable
         fields = '__all__'
 
-class getUserPtcpSerializer(serializers.ModelSerializer):
+class getUserPtcpSerializer(serializers.ModelSerializer):   #UserTimeMatchTable model 들어감
     """
     출력해야 하는 것 : 내가 어떤 실험을, 언제, 어디에서, 몇시 사이에 참여했는지
     --> 어떤 Article의 어떤 TimeTable에 참가했는지 탐색
     """
-    timetable = getUserPtcpTimeSerializer(many=True)
+    timetable = getUserPtcpTimeSerializer()
     class Meta:
-        model = Article
-        fields = ['pk','title', 'startDay', 'endDay', 'lab', 'reward']
+        model = UserTimeMatchTable
+        fields = ['timetable']
 # <-- -->

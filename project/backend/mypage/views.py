@@ -29,6 +29,7 @@ def getUserArticle(request):
     userID = request.user
     loginUser = CustomUser.objects.get(userID=userID)
     data = Article.objects.filter(writerID=loginUser.pk)
+    print(type(data))
     serializer = getUserArticleSerializer(data, many=True)
     return Response(serializer.data)
 
