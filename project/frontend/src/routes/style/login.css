@@ -1,8 +1,8 @@
 .Header {
     position: relative;
     padding: 14px 22px;
-    width:98%;
-    height:65px;
+    width:100%;
+    height:70px;
     display:flex;
     align-items: center;
     box-shadow : 0 2px 2px -1px rgb(0 0 0 /10%);
@@ -10,14 +10,13 @@
 .photo {
     margin-top: 10px;
     width:220px;
-    height:65px;
+    height:70px;
 }
 .signup-message{
     color:black;
     margin-right: 16px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top:12px;
+    font-size: 14px;
+    margin-top:18px;
 }
 .Header-logo{
     position: relative;
@@ -29,7 +28,11 @@
 }
 .spacer{
     position: relative;
-    width:67%;
+    width:65%;
+}
+.Main-spacer{
+    position: relative;
+    width: 69%;
 }
 .signup-button{ 
     font-weight: bold;
@@ -40,22 +43,23 @@
 }
 .login {
     display:inline-block;
-    padding: top 20px;
     margin:50px;
     text-align:left;
     padding-top:5%;
     width:20%;
 }
-.outline{
-    border-top: 1px solid #00bffe ;
-    border-bottom: 1px solid #00bffe;
+.signup {
+    display:inline-block;
+    margin:50px;
+    margin-top:70px;
+    margin-bottom:20px;
+    text-align:left;
+    width:20%;
 }
 .medium{
     width:100%;
-    height:50%;
     text-align: center;
 }
-
 .title{
     font-weight: bold;
     margin-bottom:20px;
@@ -66,14 +70,92 @@
     margin-top:10px;
     margin-bottom: 20px;
 }
-
 .m_bottom{
-
     position: relative;
     display: flex;
-    top:30px;
+    top: 10px;
+}
+.bottom{
+    margin-top:10px;
+}
+.Main-button{
+    font-weight: bold;
+    font-size : 24px;
+    float : right;
+    vertical-align: middle;
+    display: flex;
+}
+.Main-left{
+    clip-path: polygon(0% 0%, 60% 0%, 40% 100%, 0% 100%);
+    width:100%;
+    height:900px;
+    float:left;
+    background-color: #89cff0;
+}
+.Main-left:hover{
+    cursor:pointer;
+    transform:scale(1.05);
+    transition: .5s;
+}
+.Main-right{
+    position: absolute;
+    clip-path: polygon(60% 0%, 100% 0%, 100% 100%, 40% 100%);
+    width: 100%;
+    height:900px;
+    float:right;
+    background-color: white;
+    z-index: 2;
+    text-align: right;
+
+}
+.Main-right:hover{
+    cursor:pointer;
+    transform:scale(1.05);
+    transition:.5s;
+}
+.Main-title{
+    margin-top:350px;
+    margin-bottom: 350px;
+    font-size:40px;
+    font-weight: bold;
+    
+}
+.Main-left-title{
+    padding-left:230px;
+    color:white;
+}
+.Main-left-button{
+    margin-top:50px;
+    padding-left:380px;
+}
+.Main-left-button-style{
+    font-size: 25px;
+    border-radius: 3px;
+    background-color: #89cff0;
+    border: 2px solid white;
+    color:white;
+}
+.Main-left-button-style:hover{
+    color:#89cff0;
+    background-color: white;
 }
 
-.bottom{
-    margin-top:20px;
+.Main-right-title{
+    padding-right:200px;
+    color:#89cff0;
+}
+.Main-right-button{
+    margin-top:50px;
+    padding-right:410px;
+}
+.Main-right-button-style{
+    font-size: 25px;
+    border-radius: 3px;
+    background-color: white;
+    border: 2px solid #89cff0;
+    color:#89cff0;
+}
+.Main-right-button-style:hover{
+    color:white;
+    background-color: #89cff0;
 }

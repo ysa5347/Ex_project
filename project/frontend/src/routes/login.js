@@ -10,6 +10,7 @@ import { MDBBtn,
     MDBCheckbox} from "mdb-react-ui-kit";
 import "./style/login.css"
 import logo from "./style/logo.png";
+import { Desktop,Mobile } from "Media";
 
 
 const Login = ({isLogin,setIsLogin}) => {
@@ -38,21 +39,24 @@ const Login = ({isLogin,setIsLogin}) => {
         //if true => setIsLogin(True) 그다음 메인 페이지
         //data post하면 됨
     }
+    const onMain=()=>{
+        navigate("/")
+    }
     const onSignup = () => {
         navigate("/signup")
     }
     return(
-        <div>
+        <Desktop>
             <div className="Header">
                 <div className="Header-logo">
-                    <img className="photo" src={logo}></img>
+                    <img className="photo"onClick={onMain} src={logo}></img>
                 </div>
                 <div className="spacer"></div>
                 <div className="signup-button">
                     <span className="signup-message">
                         아직 회원이 아니신가요?
                     </span>
-                    <MDBBtn outline onClick={onSignup}size="sm">회원가입</MDBBtn>
+                    <MDBBtn outline onClick={onSignup}>회원가입</MDBBtn>
                 </div>
             </div>
             <div className="medium">
@@ -103,7 +107,7 @@ const Login = ({isLogin,setIsLogin}) => {
                     
                 </div>
             </div>
-        </div>
+        </Desktop>
         
     )
 }

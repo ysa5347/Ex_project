@@ -1,12 +1,19 @@
 import react, { useState,useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {birthList,emailList} from "./data/signup_data";
 import Modal from "./modal/signModal";
-
+import logo from "./style/logo.png";
+import { MDBBtn,
+    MDBInputGroup,
+    MDBInputGroupElement,
+    MDBIcon,
+    MDBInputGroupText,
+    MDBRow,
+    MDBCol,
+    MDBCheckbox} from "mdb-react-ui-kit";
 const Signup = ({isLogin,setIsLogin}) => {
-
-    const inputRef = useRef();
+    let navigate = useNavigate();
     const [check,setCheck] = useState(false) //id가 있는지 없는지 확인 state 확인
-    const [popup,setPopup]= useState(false) //팝업
     const [on,setOn] = useState(false) //id 중복확인 눌렀는지 확인 state 확인
     const [final,setFinal] = useState("") //최종적으로 나오는 메일 state 확인
     const [passwordType,setPasswordType] = useState(true)
@@ -38,7 +45,9 @@ const Signup = ({isLogin,setIsLogin}) => {
         }
         
     }
-    
+    const onMain=()=>{
+        navigate("/")
+    }
     const checkID = (e)=>{
         e.preventDefault();
         setOn(true)
@@ -51,9 +60,8 @@ const Signup = ({isLogin,setIsLogin}) => {
     }
 
     const sign = () => {
-        setPopup(true)
         const data = {
-            userID : id,
+            usersID : id,
             userPW : password,
             name : name,
             phone : phone,
@@ -62,6 +70,7 @@ const Signup = ({isLogin,setIsLogin}) => {
         }
         //data 저장하는 post보내기
         console.log(data)
+        
     }
 
     useEffect (() => {
@@ -74,88 +83,111 @@ const Signup = ({isLogin,setIsLogin}) => {
     })
     
     return(
-        <div className="회원가입">
-            회원가입
-            <div className="id">
-                ID
-                <input
-                    name="id" 
-                    onChange={onChange} 
-                    placeholder="아이디를 입력하세요"
-                    ref={inputRef}
-                    value={id}/>
-                <button onClick={checkID}>중복확인</button>
-                {on && (check ?(
-                    <label>사용가능한 아이디입니다.</label>
-                ) : ( 
-                <label>중복입니다.</label>
-                ))}
-                
+        <div>
+            <div className="Header">
+                <div className="Header-logo">
+                    <img className="photo" onClick={onMain} src={logo}></img>
+                </div>
+                <div className="spacer"></div>
             </div>
-            <div className="password">
-                password
-                <input
-                    name="password" 
-                    type={passwordType? "password":"text"}
-                    onChange={onChange} 
-                    placeholder="비밀번호를 입력하세요"
-                    ref={inputRef}
-                    value={password}/>
-                <button onClick={() =>setPasswordType(!passwordType) }>보기</button>
+            <div className="medium">
+                <div className="signup">
+                    <h2 className="title">회원가입</h2>
+                        <div className="id">
+                            ID
+                            <MDBInputGroup className="mb-3">
+                                <MDBInputGroupElement  
+                                    placeholder="your ID"
+                                    onChange={onChange}
+                                    size="lg"
+                                    name="id"
+                                    type="text"/>
+                                <MDBInputGroupText onClick={checkID}>중복확인</MDBInputGroupText>
+                            </MDBInputGroup>
+                            {on && (check ?(
+                                <label>사용가능한 아이디입니다.</label>
+                            ) : ( 
+                            <label>중복입니다.</label>
+                            ))}
+                        
+                        </div>
+                    <div className="password">
+                        비밀번호
+                            <MDBInputGroup className="mb-3">
+                            <MDBInputGroupElement  
+                                placeholder="your password"
+                                size="lg"
+                                onChange={onChange}
+                                name="password"
+                                type={passwordType? "password":"text"}/>
+                            <MDBInputGroupText>
+                                <MDBIcon far icon="eye" onClick={() =>setPasswordType(!passwordType)}/>
+                            </MDBInputGroupText>
+                            </MDBInputGroup>
+                    </div>
+                    <div className="Name">
+                        이름
+                        <MDBInputGroup className="mb-3">
+                        <MDBInputGroupElement  
+                                placeholder="이름을 입력하세요"
+                                size="lg"
+                                onChange={onChange}
+                                name="name"
+                                type="text"/>
+                        </MDBInputGroup>
+                    </div>
+                    <div className="phone">
+                        전화번호
+                        <MDBInputGroup className="mb-3">
+                        <MDBInputGroupElement  
+                                placeholder="전화번호를 입력하세요.(-를 빼주세요)"
+                                size="lg"
+                                onChange={onChange}
+                                name="phone"
+                                type="text"
+                                value={phone}/>
+                        </MDBInputGroup>
+                    </div>
+                    <div className="birth">
+                        생년
+                        <MDBInputGroup className="mb-3">
+                        <select className="form-control" name="birth" onChange={onChange} defaultValue={0}>
+                            {birthList.map((item)=>(
+                                <option value={item.value} key={item.value}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </select>
+                        </MDBInputGroup>
+                    </div>
+                    <div className="email">
+                        E-mail
+                        <MDBInputGroup className="mb-3">
+                            <MDBInputGroupElement  
+                                    placeholder="E-mail을 입력하세요"
+                                    size="lg"
+                                    onChange={onChange}
+                                    name="email"
+                                    type="text"
+                                    />
+                            <select className="form-control" name="cmail" onChange={onChange} >
+                                {emailList.map((item)=>(
+                                    <option value={item.value} key={item.value}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </MDBInputGroup>
+                    </div>
+                </div>
+                <div>
+                    <react.Fragment>
+                        <MDBBtn type="submit" outline onClick={sign}>회원가입</MDBBtn>
+                        
+                    </react.Fragment>
+                </div>
             </div>
-            <div className="Name">
-                이름
-                <input
-                    name="name" 
-                    onChange={onChange} 
-                    placeholder="이름을 입력하세요"
-                    ref={inputRef}
-                    value={name}/>
-            </div>
-            <div className="phone">
-                전화번호
-                <input
-                    name="phone" 
-                    onChange={onChange}
-                    ref = {inputRef}
-                    placeholder="전화번호를 입력하세요.(-를 빼주세요)"
-                    value={phone}/>
-            </div>
-            <div className="birth">
-                생년
-                <select name="birth" onChange={onChange} defaultValue={0}>
-                    {birthList.map((item)=>(
-                        <option value={item.value} key={item.value}>
-                            {item.name}
-                        </option>
-                    ))}
-                </select>          
-            </div>
-            <div className="email">
-                E-mail
-                <input
-                    name="email" 
-                    onChange={onChange}
-                    ref = {inputRef}
-                    placeholder="E-mail을 입력하세요"
-                    value={email} />
-                    <select name="cmail" onChange={onChange} >
-                        {emailList.map((item)=>(
-                            <option value={item.value} key={item.value}>
-                                {item.name}
-                            </option>
-                        ))}
-                    </select>
-            </div>
-            <div className="gender">
-
-            </div>
-            
-            <react.Fragment>
-                <button onClick={sign}>회원가입</button>
-                <Modal open={popup}></Modal>
-            </react.Fragment>
-        </div>
+        </div>   
     )
 }
 
