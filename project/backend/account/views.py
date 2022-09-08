@@ -39,7 +39,7 @@ def createUser(request):
 
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
-def loginUser(request):
+def loginUser(request):                                                                                                                                                                                        
     if request.method == 'GET':
         if request.session.session_key:
             Response({"message":"you're already loggined"}, status=status.HTTP_208_ALREADY_REPORTED)

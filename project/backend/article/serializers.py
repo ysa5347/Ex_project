@@ -1,3 +1,4 @@
+from dataclasses import fields
 from rest_framework import serializers
 from .models import Article, TimeTable, UserTimeMatchTable
 
@@ -7,14 +8,19 @@ class UserTimeMatchTableSerializer(serializers.ModelSerializer):
         model = UserTimeMatchTable
         fields = ['ptcpUser', 'Timetable']
 
-class ArticleTimeTableSerializer(serializers.ModelSerializer):
+class ArticleTimeTableSerializer_read(serializers.ModelSerializer):
     ptcpTable = serializers.StringRelatedField(many=True)
     class Meta:
         model = TimeTable
         exclude = ['article']
 
+class ArticleTimeTableSerializer_write(serializers.ModelSerializer):
+    class Meta:
+        model = TimeTable
+        fields = '__all__'
+
 class ArticleSerializer(serializers.ModelSerializer):
-    timeTable = ArticleTimeTableSerializer(many=True, read_only=True)
+    timeTable = ArticleTimeTableSerializer_read(many=True, read_only=True)
 
     def validate_date(self, data):
         """Check that startDay place before of endDay."""
@@ -29,8 +35,6 @@ class ArticleSerializer(serializers.ModelSerializer):
         else:
             print("zero")
         return data
-
-
 
     class Meta:
         model = Article
