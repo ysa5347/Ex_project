@@ -6,7 +6,7 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import ArticleSerializer, ArticleListSerializer, ArticleTimeTableSerializer#, UserTimeMatchTableSerializer
+from .serializers import ArticleSerializer, ArticleListSerializer, ArticleTimeTableSerializer_read, ArticleTimeTableSerializer_write#, UserTimeMatchTableSerializer
 from .models import Article, UserTimeMatchTable, TimeTable
 
 
@@ -49,21 +49,39 @@ def getPtcpUser(request, pk):
 @api_view(['POST'])
 def ArticleCreate(request):
     if request.method == 'POST':
+        # 인증
         if not request.session.session_key:
             return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
         userID = request.user
         loginUser = CustomUser.objects.get(userID=userID)
         if not loginUser.isPermit:
             return Response('권한이 필요한 요청입니다.')
+        
+        # request data 변환
         data = request.data
         data['writerID'] = loginUser.pk
-        # data.user = request.user
-        serializer = ArticleSerializer(data = data)
-        if serializer.is_valid() and serializer.validate_date(data):
-            serializer.save()
-            return Response('valid update', status=status.HTTP_200_OK)
+        # TTdata : list of timeTable.
+        timeTableDatas = data.pop('timeTable')
+        
+        # Article 정보 저장
+        articleSerializer = ArticleSerializer(data=data)
+        if articleSerializer.is_valid() and articleSerializer.validate_date(data):
+            articleSerializer.save()
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(articleSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # timeTable 정보 저장
+        articleID = Article.objects.latest('id').id
+        print(articleID)
+        for timeTableData in timeTableDatas:
+            timeTableData['article'], timeTableData['numPtcp'] = articleID, 0
+            timeTableSerializer = ArticleTimeTableSerializer_write(data=timeTableData)
+            if timeTableSerializer.is_valid():
+                timeTableSerializer.save()
+            else:
+                return Response(timeTableSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response('valid update', status=status.HTTP_200_OK)
 
 @api_view(['PUT'])
 def ArticleUpdate(request, pk):
