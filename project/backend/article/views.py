@@ -103,11 +103,27 @@ def ArticlePtcp(request, pk):
             else:
                 res.append(timeTableData)
         return Response(res)
-            
     
     # POST | 참여 요망 timetable request
     elif request.method == 'POST':
-        pass
+        timeTable = TimeTable.objects.get(id=request.data['id'])
+        timeTableData = ArticleTimeTableSerializer_read(timeTable).data
+
+        if timeTable.numMax <= timeTable.numPtcp:
+            return Response('error 403: 요청하신 Table은 이미 만석입니다.', status=status.HTTP_403_FORBIDDEN)
+        if str(userID) in timeTableData['ptcpTable']:
+            return Response('error 403: 이미 신청한 시간입니다.', status=status.HTTP_403_FORBIDDEN)
+
+        matchTable = UserTimeMatchTable(userID=userID, timetable=timeTable)
+        matchTable.save()
+        # 참여자 수 계측
+        timeTableData = ArticleTimeTableSerializer_read(timeTable).data
+        timeTable.numPtcp = len(timeTableData['ptcpTable'])
+        timeTable.save()
+        
+        
+        return Response('valid update', status=status.HTTP_200_OK)
+        
 
 
     
