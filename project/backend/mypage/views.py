@@ -4,11 +4,12 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+import time
 
 from .serializers import getUserSerializer, getUserArticleSerializer,getUserPtcpSerializer, getUserPtcpTimeSerializer
-import time
 from account.models import CustomUser
 from article.models import Article, TimeTable, UserTimeMatchTable
+from article.serializers import ArticleListSerializer
 
 @api_view(['GET'])
 def getUser(request):
@@ -39,7 +40,12 @@ def getUserPtcp(request):
         return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
     userID = request.user
     loginUser = CustomUser.objects.get(userID=userID)
-    matchtableData = UserTimeMatchTable.objects.filter(userID=userID)
+    matchtableDatas = UserTimeMatchTable.objects.filter(userID=userID)
+    res = []
     # timetableData = TimeTable.objects.filter(ptcpUser=userID)
-    serializer = getUserPtcpSerializer(matchtableData, many=True)
-    return Response(serializer.data)
+    for matchtableData in matchtableDatas:
+        serializer = getUserPtcpSerializer(matchtableData)
+        serializer = serializer.data['timetable']
+        serializer['article'] = ArticleListSerializer(Article.objects.get(id=serializer['article'])).data
+        res.append(serializer)
+    return Response(res)
