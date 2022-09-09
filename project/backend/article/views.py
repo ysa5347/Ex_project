@@ -8,7 +8,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import ArticleSerializer, ArticleListSerializer, ArticleTimeTableSerializer_read, ArticleTimeTableSerializer_write#, UserTimeMatchTableSerializer
 from .models import Article, UserTimeMatchTable, TimeTable
+from datetime import datetime, timedelta, timezone
 
+KST = timezone(timedelta(hours=9))
 
 @api_view(['GET'])
 def helloAPI(request):
@@ -35,16 +37,6 @@ def ArticleView(request, pk):
     
     articleSerializer = ArticleSerializer(article, many=False)
     return Response(articleSerializer.data)
-"""
-@api_view(['GET'])
-def getPtcpUser(request, pk):
-    try:
-        timeTable = TimeTable.objects.get(pk=pk)
-    except TimeTable.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    userSerializer = ArticleTimeTableSerializer(timeTable, many=False)
-    return Response(userSerializer.data)
-"""
 
 @api_view(['POST'])
 def ArticleCreate(request):
@@ -72,7 +64,6 @@ def ArticleCreate(request):
 
         # timeTable 정보 저장
         articleID = Article.objects.latest('id').id
-        print(articleID)
         for timeTableData in timeTableDatas:
             timeTableData['article'], timeTableData['numPtcp'] = articleID, 0
             timeTableSerializer = ArticleTimeTableSerializer_write(data=timeTableData)
@@ -82,6 +73,60 @@ def ArticleCreate(request):
                 return Response(timeTableSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response('valid update', status=status.HTTP_200_OK)
+
+@api_view(['POST', 'GET'])
+def ArticlePtcp(request, pk):
+    # 인증
+    if not request.session.session_key:
+        return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
+    userID = request.user
+    loginUser = CustomUser.objects.get(userID=userID)
+    # 요청 실험 게시글
+    try:
+        article = Article.objects.get(pk=pk)
+    except Article.DoesNotExist:
+        return Response('error 404: 요청하신 페이지는 삭제되었거나 존재하지 않습니다.', status=status.HTTP_404_NOT_FOUND)
+
+    # GET | 참여 가능한 timetable response
+    if request.method == 'GET':
+        timeTableDatas = TimeTable.objects.filter(article=article.pk)
+        res = []
+        for timeTableData in timeTableDatas:
+            timeTableData = ArticleTimeTableSerializer_read(timeTableData).data
+            del timeTableData['ptcpTable']
+            timeTableData['start'] = timeTableData['start'][:-3] + timeTableData['start'][-2:]
+
+            if datetime.strptime(timeTableData['start'], '%Y-%m-%dT%H:%M:%S%z') < datetime.now(KST):
+                continue
+            elif timeTableData['numMax'] <= timeTableData['numPtcp']:
+                continue
+            else:
+                res.append(timeTableData)
+        return Response(res)
+    
+    # POST | 참여 요망 timetable request
+    elif request.method == 'POST':
+        timeTable = TimeTable.objects.get(id=request.data['id'])
+        timeTableData = ArticleTimeTableSerializer_read(timeTable).data
+
+        if timeTable.numMax <= timeTable.numPtcp:
+            return Response('error 403: 요청하신 Table은 이미 만석입니다.', status=status.HTTP_403_FORBIDDEN)
+        if str(userID) in timeTableData['ptcpTable']:
+            return Response('error 403: 이미 신청한 시간입니다.', status=status.HTTP_403_FORBIDDEN)
+
+        matchTable = UserTimeMatchTable(userID=userID, timetable=timeTable)
+        matchTable.save()
+        # 참여자 수 계측
+        timeTableData = ArticleTimeTableSerializer_read(timeTable).data
+        timeTable.numPtcp = len(timeTableData['ptcpTable'])
+        timeTable.save()
+        
+        
+        return Response('valid update', status=status.HTTP_200_OK)
+        
+
+
+    
 
 @api_view(['PUT'])
 def ArticleUpdate(request, pk):
