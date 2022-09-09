@@ -4,11 +4,12 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+import time
 
 from .serializers import getUserSerializer, getUserArticleSerializer,getUserPtcpSerializer, getUserPtcpTimeSerializer
-import time
 from account.models import CustomUser
 from article.models import Article, TimeTable, UserTimeMatchTable
+from article.serializers import ArticleListSerializer
 
 @api_view(['GET'])
 def getUser(request):
@@ -44,5 +45,7 @@ def getUserPtcp(request):
     # timetableData = TimeTable.objects.filter(ptcpUser=userID)
     for matchtableData in matchtableDatas:
         serializer = getUserPtcpSerializer(matchtableData)
-        res.append(serializer.data['timetable'])
+        serializer = serializer.data['timetable']
+        serializer['article'] = ArticleListSerializer(Article.objects.get(id=serializer['article'])).data
+        res.append(serializer)
     return Response(res)
