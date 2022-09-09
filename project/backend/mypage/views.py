@@ -39,7 +39,10 @@ def getUserPtcp(request):
         return Response('로그인이 필요한 요청입니다.', status=status.HTTP_403_FORBIDDEN)
     userID = request.user
     loginUser = CustomUser.objects.get(userID=userID)
-    matchtableData = UserTimeMatchTable.objects.filter(userID=userID)
+    matchtableDatas = UserTimeMatchTable.objects.filter(userID=userID)
+    res = []
     # timetableData = TimeTable.objects.filter(ptcpUser=userID)
-    serializer = getUserPtcpSerializer(matchtableData, many=True)
-    return Response(serializer.data)
+    for matchtableData in matchtableDatas:
+        serializer = getUserPtcpSerializer(matchtableData)
+        res.append(serializer.data['timetable'])
+    return Response(res)
