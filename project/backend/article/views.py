@@ -35,16 +35,6 @@ def ArticleView(request, pk):
     
     articleSerializer = ArticleSerializer(article, many=False)
     return Response(articleSerializer.data)
-"""
-@api_view(['GET'])
-def getPtcpUser(request, pk):
-    try:
-        timeTable = TimeTable.objects.get(pk=pk)
-    except TimeTable.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    userSerializer = ArticleTimeTableSerializer(timeTable, many=False)
-    return Response(userSerializer.data)
-"""
 
 @api_view(['POST'])
 def ArticleCreate(request):
@@ -82,6 +72,10 @@ def ArticleCreate(request):
                 return Response(timeTableSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response('valid update', status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def ArticlePtcp(request, pk):
+    pass
 
 @api_view(['PUT'])
 def ArticleUpdate(request, pk):
