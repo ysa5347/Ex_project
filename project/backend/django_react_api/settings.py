@@ -10,16 +10,28 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+from sshtunnel import SSHTunnelForwarder
+import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# if str(socket.gethostbyname(socket.gethostname()))[:2]!= '10':
+# Connect to a server using the ssh keys. See the sshtunnel documentation for using password authentication
+
+# with SSHTunnelForwarder(
+#         'bastion',
+#         remote_bind_address=('ex-finder-db.cqpnhc7dgpt9.ap-northeast-2.rds.amazonaws.com', 3306),
+#     ) as ssh_tunnel:
+     # load .env
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#rb&g5o8=846jpl7mfsjf$csnq7eu%vhb65xdxk6i&18_w*hc3'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -93,8 +105,11 @@ WSGI_APPLICATION = 'django_react_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'PORT': 3306,
+        'OPTIONS': {
+            'read_default_file': str(BASE_DIR / 'django_react_api/mysql.cnf'),
+        },
     }
 }
 
@@ -137,8 +152,8 @@ REST_FRAMEWORK = {
 
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
 )
 
 # Static files (CSS, JavaScript, Images)
