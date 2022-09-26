@@ -38,7 +38,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '10.0.83.103',
-    'api.ex-finder.com'
+    'api.ex-finder.com',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0'
 ]
 
 
