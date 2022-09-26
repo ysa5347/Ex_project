@@ -37,7 +37,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
+<<<<<<< HEAD
     'ex-finder-elb-152770833.ap-northeast-2.elb.amazonaws.com',
+=======
+>>>>>>> 3846be7aed4a994c70c3e4c128c5423c9259dbc3
     '10.0.83.103',
     'api.ex-finder.com',
     'localhost',
