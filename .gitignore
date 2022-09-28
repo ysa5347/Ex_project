@@ -19,11 +19,14 @@ sketch
 ### Django ###
 *.log
 *.pot
+*.cnf
 *.pyc
 __pycache__/
 local_settings.py
+db_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.sql
 media
 django-react-venv/
 
