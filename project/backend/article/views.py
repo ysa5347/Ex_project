@@ -9,6 +9,8 @@ from rest_framework.decorators import api_view
 from .serializers import ArticleSerializer, ArticleListSerializer, ArticleTimeTableSerializer_read, ArticleTimeTableSerializer_write#, UserTimeMatchTableSerializer
 from .models import Article, UserTimeMatchTable, TimeTable
 from datetime import datetime, timedelta, timezone
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 KST = timezone(timedelta(hours=9))
 
@@ -17,11 +19,24 @@ def helloAPI(request):
     return Response("hello world!")
 
 @api_view(['GET'])
-def ArticleList(request):
-    articles = Article.objects.all()
-    serializer = ArticleListSerializer(articles, many=True)
+def ArticleList(request, page):
+    articleList = Article.objects.order_by('id')  #id순으로 정렬
+    
+    if request.method == 'POST':
+        data = request.data
+        result = articleList.filter(title__contains=data['kw'])  #검색어
+        result |= articleList.filter(content__contains=data['kw'])
+        articleList = result
+    serializer = ArticleSerializer(articleList, many=True)
     return Response(serializer.data)
-
+    # articles = Article.objects.order_by('postDate')
+    
+    # if request.method == 'GET':
+    #     serializer = ArticleListSerializer(articles, many=True)
+    #     return Response(serializer.data)
+    # elif request.method == 'POST':
+    #     data = request.data
+    #     articleData = Article.objects.filter(name__contains=data['kw'])
 
 @api_view(['GET'])
 def ArticleView(request, pk):
