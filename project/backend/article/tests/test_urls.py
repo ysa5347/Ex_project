@@ -1,6 +1,10 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from article.views import ArticleDelete, ArticlePtcp, ArticleUpdate, helloAPI, ArticleList, ArticleView, ArticleCreate
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class TestUrls(SimpleTestCase):
     
