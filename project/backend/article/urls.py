@@ -5,7 +5,7 @@ from .views import ArticleDelete, ArticlePtcp, ArticleUpdate, helloAPI, ArticleL
 urlpatterns = [
     path("hello/", helloAPI),
     path("",ArticleList),
-    path("<int:pk>/",ArticleView),
+    path("<int:pk>/",ArticleView, name='view'),
     # path("create/", ArticleCreateView),
     path("create/", ArticleCreate),
     path("delete/<int:pk>/", ArticleDelete),
