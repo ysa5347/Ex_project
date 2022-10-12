@@ -4,9 +4,9 @@ from . import views
 from .views import IsIdValid, loginUser, logoutUser, viewsession
 
 urlpatterns = [
-    path("signup/", views.createUser),
-    path("isidvalid/", IsIdValid),
-    path("login/", loginUser),
-    path("logout/", logoutUser),
-    path("view/", viewsession),
+    path("signup/", views.createUser, name='signup'),
+    path("isidvalid/", IsIdValid, name='isIdValid'),
+    path("login/", loginUser, name='login'),
+    path("logout/", logoutUser, name='logout'),
+    path("view/", viewsession, name='view'),
 ]

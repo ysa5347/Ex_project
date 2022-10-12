@@ -4,11 +4,11 @@ from .views import ArticleDelete, ArticlePtcp, ArticleUpdate, helloAPI, ArticleL
 
 urlpatterns = [
     path("hello/", helloAPI),
-    path("",ArticleList),
+    path("",ArticleList, name='list'),
     path("<int:pk>/",ArticleView, name='view'),
     # path("create/", ArticleCreateView),
-    path("create/", ArticleCreate),
-    path("delete/<int:pk>/", ArticleDelete),
-    path("update/<int:pk>/", ArticleUpdate),
-    path("<int:pk>/ptcp/", ArticlePtcp)
+    path("create/", ArticleCreate, name='create'),
+    path("delete/<int:pk>/", ArticleDelete, name='delete'),
+    path("update/<int:pk>/", ArticleUpdate, name='update'),
+    path("<int:pk>/ptcp/", ArticlePtcp, name='ptcp')
 ]
