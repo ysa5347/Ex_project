@@ -1,13 +1,16 @@
 from rest_framework.test import APITestCase, APIClient
+from rest_framework.views import status
 from django.urls import reverse
-from article.models import Article, TimeTable, UserTimeMatchTable, SubjectTag
+from article.models import *
 from dotenv import load_dotenv
 import json, os
 
 load_dotenv()
 
-class TestViews(APITestCase):
+class testArticleList(APITestCase):
+    def setUp(self):
+        self.url = reverse('list')
     
-    def testArticleList_normal_GET(self):
-        client = APIClient()
-        client.login(username='admin', password=os.environ.get('PASSWORD'))
+    def test_GET_articlelist_success(self):
+        response = self.client.get(self.url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
