@@ -101,9 +101,14 @@ WSGI_APPLICATION = 'django_react_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME' : os.environ.get('DATABASE'),
+        'USER' : os.environ.get('DB_USER'),
+        'PASSWORD' : os.environ.get('DB_PASSWORD'),
+        'HOST' : os.environ.get('DB_HOST'),
+        'PORT' : os.environ.get('DB_PORT'),
         'OPTIONS': {
-            'read_default_file': str(BASE_DIR / 'django_react_api/mysql.cnf'),
-        },
+            'charset' : 'utf8mb4'
+        }
     }
 }
 
