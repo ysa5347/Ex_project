@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework.permissions import AllowAny
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from drf_yasg.generators import OpenAPISchemaGenerator
 # from rest_framework import routers
 
 
@@ -27,7 +28,11 @@ class HomeTemplateView(ArticleViewSet):
 
 # router = routers.DefaultRouter()
 # router.register(r'articles', views.ArticleViewSet, 'Article')
-
+class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
+    def get_schema(self, request=None, public=False):
+        schema = super().get_schema(request, public)
+        schema.schemes = ["http", "https"]
+        return schema
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,6 +42,7 @@ schema_view = get_schema_view(
         terms_of_service="https://www.google.com/policies/terms/",
     ),
     public=True,
+    generator_class=BothHttpAndHttpsSchemaGenerator,
     permission_classes=(AllowAny,),
 )
 
