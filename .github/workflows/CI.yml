@@ -27,7 +27,7 @@
 name: Continuous Integration to docker
 
 on:
-  push:
+  pull_request:
     branches: [ "stage" ]
 
 env:
