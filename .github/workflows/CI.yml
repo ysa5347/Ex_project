@@ -76,7 +76,7 @@ jobs:
         jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
 
     - name: Build, tag, and push image to Amazon ECR
-      id: build-push image
+      id: build-push
       run: |
         # Build a docker container and
         # push it to ECR so that it can
