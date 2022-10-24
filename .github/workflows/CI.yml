@@ -24,10 +24,10 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy to Amazon ECS
+name: Continuous Integration to docker
 
 on:
-  push:
+  pull_request:
     branches: [ "stage" ]
 
 env:
@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: ex-finder/api               # set this to your Amazon ECR repository name
   ECS_SERVICE: ex-finder-backend-service      # set this to your Amazon ECS service name
   ECS_CLUSTER: ex-finder-backend                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ex-finder-backend-deploy # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: task-def.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: ex-finder_backend           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -44,14 +44,19 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  CI:
+    name: CI
     runs-on: ubuntu-latest
     environment: production
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with: 
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -64,11 +69,14 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
+    - name: Create .env file
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        SECRETS_CONTEXT: ${{ toJson(secrets) }}
+      run: |
+        jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-push image
       run: |
         # Build a docker container and
         # push it to ECR so that it can
@@ -76,19 +84,3 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:latest"
-
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
-
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
