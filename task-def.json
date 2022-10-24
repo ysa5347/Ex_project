@@ -25,7 +25,12 @@
         "command": [],
         "linuxParameters": null,
         "cpu": 512,
-        "environment": [],
+        "environment": [
+          {
+            "name": "ENV_TYPE",
+            "value": "service"
+          }
+        ],
         "resourceRequirements": null,
         "ulimits": [],
         "dnsServers": [],
