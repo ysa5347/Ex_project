@@ -1,107 +1,146 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:456974328065:task-definition/ex-finder-backend-deploy:2",
-    "containerDefinitions": [
-        {
-            "name": "ex-finder_backend",
-            "image": "456974328065.dkr.ecr.ap-northeast-2.amazonaws.com/ex-finder/api:latest",
-            "cpu": 512,
-            "memoryReservation": 512,
-            "links": [],
-            "portMappings": [
-                {
-                    "containerPort": 8000,
-                    "hostPort": 8000,
-                    "protocol": "tcp"
-                }
-            ],
-            "essential": true,
-            "entryPoint": [],
-            "command": [],
-            "environment": [],
-            "environmentFiles": [],
-            "mountPoints": [],
-            "volumesFrom": [],
-            "secrets": [],
-            "dnsServers": [],
-            "dnsSearchDomains": [],
-            "extraHosts": [],
-            "dockerSecurityOptions": [],
-            "dockerLabels": {},
-            "ulimits": [],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-group": "/ecs/ex-finder-backend-deploy",
-                    "awslogs-region": "ap-northeast-2",
-                    "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
-            },
-            "systemControls": []
-        }
-    ],
-    "family": "ex-finder-backend-deploy",
-    "taskRoleArn": "arn:aws:iam::456974328065:role/ecsTaskExecutionRole",
+    "ipcMode": null,
     "executionRoleArn": "arn:aws:iam::456974328065:role/ecsTaskExecutionRole",
-    "networkMode": "awsvpc",
-    "revision": 2,
-    "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    "containerDefinitions": [
+      {
+        "dnsSearchDomains": [],
+        "environmentFiles": [],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "secretOptions": [],
+          "options": {
+            "awslogs-group": "/ecs/ex-finder-backend-deploy",
+            "awslogs-region": "ap-northeast-2",
+            "awslogs-stream-prefix": "ecs"
+          }
         },
-        {
-            "name": "ecs.capability.execution-role-awslogs"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        }
+        "entryPoint": [],
+        "portMappings": [
+          {
+            "hostPort": 8000,
+            "protocol": "tcp",
+            "containerPort": 8000
+          }
+        ],
+        "command": [],
+        "linuxParameters": null,
+        "cpu": 512,
+        "environment": [],
+        "resourceRequirements": null,
+        "ulimits": [],
+        "dnsServers": [],
+        "mountPoints": [],
+        "workingDirectory": null,
+        "secrets": [],
+        "dockerSecurityOptions": [],
+        "memory": null,
+        "memoryReservation": 512,
+        "volumesFrom": [],
+        "stopTimeout": null,
+        "image": "456974328065.dkr.ecr.ap-northeast-2.amazonaws.com/ex-finder/api:latest",
+        "startTimeout": null,
+        "firelensConfiguration": null,
+        "dependsOn": null,
+        "disableNetworking": null,
+        "interactive": null,
+        "healthCheck": null,
+        "essential": true,
+        "links": [],
+        "hostname": null,
+        "extraHosts": [],
+        "pseudoTerminal": null,
+        "user": null,
+        "readonlyRootFilesystem": null,
+        "dockerLabels": {},
+        "systemControls": [],
+        "privileged": null,
+        "name": "ex-finder_backend"
+      }
     ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2",
-        "FARGATE"
-    ],
-    "requiresCompatibilities": [
-        "FARGATE"
-    ],
-    "cpu": "512",
     "memory": "1024",
+    "taskRoleArn": "arn:aws:iam::456974328065:role/ecsTaskExecutionRole",
+    "compatibilities": [
+      "EC2",
+      "FARGATE"
+    ],
+    "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:456974328065:task-definition/ex-finder-backend-deploy:2",
+    "family": "ex-finder-backend-deploy",
+    "requiresAttributes": [
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "ecs.capability.execution-role-awslogs"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.ecr-auth"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.task-iam-role"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "ecs.capability.execution-role-ecr-pull"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "ecs.capability.task-eni"
+      }
+    ],
+    "pidMode": null,
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "networkMode": "awsvpc",
     "runtimePlatform": {
-        "operatingSystemFamily": "LINUX"
+      "operatingSystemFamily": "LINUX",
+      "cpuArchitecture": null
     },
-    "registeredAt": "2022-10-18T11:59:14.630Z",
-    "registeredBy": "arn:aws:iam::456974328065:root",
-    "tags": [
-        {
-            "key": "ecs:taskDefinition:createdFrom",
-            "value": "ecs-console-v2"
-        },
-        {
-            "key": "ecs:taskDefinition:stackId",
-            "value": "arn:aws:cloudformation:ap-northeast-2:456974328065:stack/ECS-Console-V2-TaskDefinition-dc71e34f-79d7-4bab-856c-3af389773f37/468004c1-4edc-11ed-bf46-02b7cc05a762"
-        }
-    ]
-}
+    "cpu": "512",
+    "revision": 2,
+    "status": "ACTIVE",
+    "inferenceAccelerators": null,
+    "proxyConfiguration": null,
+    "volumes": []
+  }
