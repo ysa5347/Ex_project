@@ -15,8 +15,6 @@ RUN apt-get install -y git\
 RUN apt install -y python3\
     python3-pip
 
-RUN git clone -b backend https://github.com/ysa5347/Ex_project.git
-
 COPY /.env /Ex_finder_server/Ex_project/project/backend/django_react_api/
 
 RUN pip install -r requirements.txt
