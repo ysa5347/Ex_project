@@ -1,7 +1,7 @@
 name: Continuous Deploy to ECS
 
 on:
-  pull_request:
+  push:
     branches: [ "backend" ]
 
 env:
