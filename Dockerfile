@@ -16,7 +16,6 @@ RUN apt install -y python3\
     python3-pip
 
 COPY /.env /Ex_finder_server/Ex_project/project/backend/django_react_api/
-COPY /requirements.txt /Ex_finder_server/
 
 RUN pip install -r requirements.txt
 
