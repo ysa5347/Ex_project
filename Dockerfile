@@ -3,7 +3,7 @@ FROM ubuntu
 WORKDIR /Ex_finder_server
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Seoul
-ARG BRANCH=$BRANCH
+ARG BRANCH
 
 RUN apt-get -y upgrade && apt-get -y update
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
