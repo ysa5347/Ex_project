@@ -15,6 +15,7 @@ RUN apt-get install -y git\
     screen
 RUN apt install -y python3\
     python3-pip
+RUN echo $BRANCH
 RUN git clone -b $BRANCH --single-branch https://github.com/ysa5347/Ex_project
 
 COPY /.env /Ex_finder_server/Ex_project/project/backend/django_react_api/
