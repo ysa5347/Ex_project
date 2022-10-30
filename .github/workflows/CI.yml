@@ -72,7 +72,6 @@ jobs:
     - name: Create .env file
       env:
         SECRETS_CONTEXT: ${{ toJson(secrets) }}
-        BRANCH: ${{ github.event.pull_request.head.ref }}
       run: |
         jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
 
@@ -80,12 +79,13 @@ jobs:
       id: build-push
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        branch: ${{ github.event.pull_request.head.ref }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
         echo $BRANCH
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BRANCH=$BRANCH .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BRANCH=${{ env.branch }} .
         
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:latest"
