@@ -84,6 +84,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
+        echo $BRANCH
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BRANCH=$BRANCH .
         
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
