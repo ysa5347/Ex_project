@@ -24,4 +24,4 @@ COPY /requirements.txt /Ex_finder_server/
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT sh /server.sh
+ENTRYPOINT sh ./Ex_project/server.sh
