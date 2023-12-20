@@ -73,6 +73,7 @@ jobs:
       env:
         SECRETS_CONTEXT: ${{ toJson(secrets) }}
       run: |
+        echo $SECRETS_CONTEXT
         jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
 
     - name: Build, tag, and push image to Amazon ECR
